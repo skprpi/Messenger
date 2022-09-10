@@ -1,0 +1,6 @@
+version: "3"
+
+services:
+  server:
+    build: . # path to Dockerfile
+    command: bash -c "chmod +x ./build.sh && ./build.sh && cd _build && ./m2m_chat_service_unit_test"
