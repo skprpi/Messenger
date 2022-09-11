@@ -10,4 +10,4 @@ add_subdirectory(${MICROSERVICES_ROOT_DIR}/_third_party/googletest googletest_bu
 target_compile_definitions(gtest PUBLIC GTEST_LANG_CXX20 GTEST_HAS_TR1_TUPLE=0)
 
 add_subdirectory(./tests)
-add_subdirectory(./tests)
+add_subdirectory(./app)
