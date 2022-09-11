@@ -15,5 +15,7 @@ jobs:
           submodules: true
       - name: build
         run: docker-compose -f docker-compose.yml build
+      - name: cppcheck (m2m_chat_service)
+        run: chmod +x microservices/m2m_chat_service/run_cppcheck.sh && ./microservices/m2m_chat_service/run_cppcheck.sh
       - name: tests (m2m_chat_service)
         run: docker-compose -f docker-compose.yml build && cd microservices/m2m_chat_service && chmod +x ./build.sh && ./build.sh && cd _build && chmod +x m2m_chat_service_unit_test && ./m2m_chat_service_unit_test
