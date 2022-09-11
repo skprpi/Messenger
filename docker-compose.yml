@@ -16,6 +16,10 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=username
       - MONGO_INITDB_ROOT_PASSWORD=password
 
+  keycloak:
+    container_name: "keycloak"
+    image: jboss/keycloak
+
   nginx_server:
     container_name: "nginx_server"
     image: nginx
