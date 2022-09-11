@@ -7,8 +7,10 @@ check_stderr() {
     fi
 }
 
-app_stderr=$( cppcheck -q --enable=all --suppress=missingIncludeSystem --template='{id} {file}:{line} {message}' ./app 2>&1 ) # capture stderr
-test_stderr=$( cppcheck -q --enable=style,portability --suppress=missingIncludeSystem --template='{id} {file}:{line} {message}' ./tests 2>&1 )
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+app_stderr=$( cppcheck -q --enable=all --suppress=missingIncludeSystem --template='{id} {file}:{line} {message}' ${SCRIPTPATH}/app 2>&1 ) # capture stderr
+test_stderr=$( cppcheck -q --enable=style,portability --suppress=missingIncludeSystem --template='{id} {file}:{line} {message}' ${SCRIPTPATH}/tests 2>&1 )
 
 echo "$app_stderr"
 echo "$test_stderr"
