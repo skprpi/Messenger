@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: build
-        run: docker-compose -f docker-compose.yml build
+        run: docker-compose -f docker-compose.yml build && ./m2m_chat_service/build.sh
       - name: tests (m2m_chat_service)
-        run: docker-compose -f docker-compose.yml build && ./microservices/m2m_chat_service/_build/googletest_build/m2m_chat_service_unit_test
+        run: docker-compose -f docker-compose.yml build && ./m2m_chat_service/build.sh && ./microservices/m2m_chat_service/_build/googletest_build/m2m_chat_service_unit_test
