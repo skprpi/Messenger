@@ -20,6 +20,6 @@ jobs:
       - name: Cppcheck (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/run_cppcheck.sh && ./microservices/m2m_chat_service/run_cppcheck.sh
       - name: Build (m2m_chat_service)
-        run: chmod +x ./microservices/m2m_chat_service/build.sh && /microservices/m2m_chat_service/build.sh
+        run: chmod +x ./microservices/m2m_chat_service/build.sh && ./microservices/m2m_chat_service/build.sh
       - name: Tests (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test && ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test
