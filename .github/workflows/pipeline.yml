@@ -14,4 +14,4 @@ jobs:
       - name: build
         run: docker-compose -f docker-compose.yml build
       - name: tests (m2m_chat_service)
-        run: docker-compose -f docker-compose.yml build && cd microservices && cd m2m_chat_service && chmod +x ./build.sh && ./build.sh && cd _build && ls && cd googletest_build && ls
+        run: docker-compose -f docker-compose.yml build && cd microservices && cd m2m_chat_service && chmod +x ./build.sh && ./build.sh && cd _build/googletest_build && chmod +x m2m_chat_service_unit_test && ./m2m_chat_service_unit_test
