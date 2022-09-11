@@ -11,5 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install python
+      - name: build
         run: docker-compose -f docker-compose.yml up -d --build
+      - name: tests (m2m_chat_service)
+        run: ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test
