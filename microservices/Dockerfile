@@ -17,12 +17,3 @@ RUN apt-get install -y --no-install-recommends\
         tar \
         ca-certificates \
         cppcheck
-    # apt-get autoclean && \
-    # apt-get autoremove && \
-    # apt-get clean && \
-    # rm -rf /var/lib/apt/lists/*
-
-WORKDIR /usr/src/messenger/microservices
-
-COPY ./m2m_chat_service ./m2m_chat_service
-COPY ./_third_party ./_third_party

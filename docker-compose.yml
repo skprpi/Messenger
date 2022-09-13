@@ -4,10 +4,11 @@ services:
 
   m2m_chat_service:
     container_name: "m2m_chat_service"
-    build:
-      context: ./microservices
-      dockerfile: ./Dockerfile.m2m_chat_service
-    command: bash -c "cd m2m_chat_service && chmod +x ./build.sh && ./build.sh"
+    image: mfatin/messenger:1.0
+    volumes:
+      - ./microservices/m2m_chat_service:/usr/src/messenger/microservices/m2m_chat_service
+      - ./microservices/_third_party:/usr/src/messenger/microservices/_third_party
+    command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service && chmod +x ./build.sh && ./build.sh"
 
   mongodb:
     container_name: "mongodb"
@@ -15,6 +16,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=username
       - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./mongodb:/usr/src/messenger/mongodb
 
   keycloak:
     container_name: "keycloak"
