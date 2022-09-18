@@ -1,0 +1,4 @@
+
+[submodule "microservices/_third_party/googletest"]
+	path = microservices/_third_party/googletest
+	url = https://github.com/google/googletest.git

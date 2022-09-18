@@ -1,0 +1,25 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build docker compose
+        run: docker-compose -f docker-compose.yml build
+      - name: Install depts
+        run: sudo apt-get install -y cppcheck
+      - name: Cppcheck (m2m_chat_service)
+        run: chmod +x ./microservices/m2m_chat_service/run_cppcheck.sh && ./microservices/m2m_chat_service/run_cppcheck.sh
+      - name: Build (m2m_chat_service)
+        run: chmod +x ./microservices/m2m_chat_service/build.sh && ./microservices/m2m_chat_service/build.sh
+      - name: Tests (m2m_chat_service)
+        run: chmod +x ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test && ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test
