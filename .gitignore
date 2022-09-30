@@ -1,4 +1,9 @@
 _build/
 build/
 .vscode
+.cache
+.tox
+.pytest_cache
+__pycache__
+venv
 !.gitkeep

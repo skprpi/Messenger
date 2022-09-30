@@ -6,4 +6,5 @@ add_executable(m2m_chat_service_unit_test)
 target_sources(m2m_chat_service_unit_test PRIVATE main.cpp)
 
 # google test
-target_link_libraries(m2m_chat_service_unit_test gtest gtest_main)# google test
+find_package(GTest REQUIRED)
+target_link_libraries(m2m_chat_service_unit_test PRIVATE GTest::GTest)

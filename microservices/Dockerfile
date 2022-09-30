@@ -16,4 +16,6 @@ RUN apt-get install -y --no-install-recommends\
         unzip \
         tar \
         ca-certificates \
-        cppcheck
+        cppcheck \
+        libboost-all-dev \
+        libgtest-dev
