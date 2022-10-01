@@ -1,7 +1,6 @@
 #ifndef MICROSERVICES_CORE_SERVER_CONFIG
 #define MICROSERVICES_CORE_SERVER_CONFIG
 
-#include "server_config_parser.h"
 #include "timeout_limiter.h"
 
 class ServerConfig {
