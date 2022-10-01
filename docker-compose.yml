@@ -10,21 +10,21 @@ services:
       - ./microservices/core:/usr/src/messenger/microservices/core
     command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service && chmod +x ./build.sh && ./build.sh"
 
-  # mongodb:
-  #   container_name: "mongodb"
-  #   image: mongo
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=username
-  #     - MONGO_INITDB_ROOT_PASSWORD=password
-  #   volumes:
-  #     - ./mongodb:/usr/src/messenger/mongodb
+  mongodb:
+    container_name: "mongodb"
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./mongodb:/usr/src/messenger/mongodb
 
-  # keycloak:
-  #   container_name: "keycloak"
-  #   image: jboss/keycloak
+  keycloak:
+    container_name: "keycloak"
+    image: jboss/keycloak
 
-  # nginx_server:
-  #   container_name: "nginx_server"
-  #   image: nginx
-  #   ports:
-  #     - 8080:80 # localhost:8080
+  nginx_server:
+    container_name: "nginx_server"
+    image: nginx
+    ports:
+      - 8080:80 # localhost:8080

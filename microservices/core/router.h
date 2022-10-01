@@ -23,8 +23,7 @@ public:
     }*/
 
     template <typename... Args>
-    Router(std::shared_ptr<BaseHandler> handler, Args &&...other)
-        : Router(std::forward<Args>(other)...) {
+    Router(std::shared_ptr<BaseHandler> handler, Args &&...other) : Router(std::forward<Args>(other)...) {
         processHandler(handler);
     }
 

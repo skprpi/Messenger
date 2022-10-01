@@ -17,7 +17,7 @@ protected:
 public:
     BaseTimeoutLimiter() = default;
 
-    virtual void start(tcp::socket &socket) = 0;
+    virtual void start() = 0;
 
     virtual void cancel() = 0;
 
@@ -26,14 +26,12 @@ public:
 
 // TimeoutLimiter
 
-class TimeoutLimiter final
-    : public BaseTimeoutLimiter,
-      public std::enable_shared_from_this<TimeoutLimiter> {
+class TimeoutLimiter final : public BaseTimeoutLimiter, public std::enable_shared_from_this<TimeoutLimiter> {
 public:
-    TimeoutLimiter(tcp::socket &socket, std::chrono::seconds expiry_time)
+    TimeoutLimiter(tcp::socket &socket, std::chrono::milliseconds expiry_time)
         : socket(socket), timer(socket.get_executor(), expiry_time) {}
 
-    void start(tcp::socket &socket) final {
+    void start() final {
         auto self = this->shared_from_this();
         timer.async_wait([self](boost::beast::error_code ec) {
             if (ec) {
@@ -56,7 +54,7 @@ class EmptyTimeoutLimiter final : public BaseTimeoutLimiter {
 public:
     EmptyTimeoutLimiter() = default;
 
-    void start(tcp::socket &socket) final {
+    void start() final {
         // do nothing
     }
 
@@ -68,10 +66,9 @@ public:
 // TODO: use config file instead of builder
 template <typename DerivedTimeLimiterType, typename... Args>
 std::reference_wrapper<BaseTimeoutLimiter> buildTimeoutLimiter(Args &&...args) {
-    static_assert(
-        std::is_base_of<BaseTimeoutLimiter, DerivedTimeLimiterType>::value,
-        "Class parameter have"
-        "to be a children of BaseTimeoutLimiter");
+    static_assert(std::is_base_of<BaseTimeoutLimiter, DerivedTimeLimiterType>::value,
+                  "Class parameter have"
+                  "to be a children of BaseTimeoutLimiter");
     return *std::make_shared<BaseTimeoutLimiter>(std::forward<Args>(args)...);
 }
 

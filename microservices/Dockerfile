@@ -16,4 +16,5 @@ RUN apt-get install -y --no-install-recommends \
         tar \
         ca-certificates \
         libboost-all-dev \
-        libgtest-dev
+        libgtest-dev \
+        rapidjson-dev
