@@ -63,13 +63,4 @@ public:
     }
 };
 
-// TODO: use config file instead of builder
-template <typename DerivedTimeLimiterType, typename... Args>
-std::reference_wrapper<BaseTimeoutLimiter> buildTimeoutLimiter(Args &&...args) {
-    static_assert(std::is_base_of<BaseTimeoutLimiter, DerivedTimeLimiterType>::value,
-                  "Class parameter have"
-                  "to be a children of BaseTimeoutLimiter");
-    return *std::make_shared<BaseTimeoutLimiter>(std::forward<Args>(args)...);
-}
-
 #endif  // MICROSERVICES_CORE_BASE_TIMEOUT_LIMITER
