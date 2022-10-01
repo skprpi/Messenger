@@ -3,8 +3,4 @@
 script_path="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd ${script_path}
 
-sudo rm -rf ./_build
-mkdir _build
-
-cd ./_build
-cmake .. && make
+./_build/m2m_chat_service /app/server_config.json

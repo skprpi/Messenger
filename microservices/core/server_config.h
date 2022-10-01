@@ -6,7 +6,7 @@
 
 class ServerConfig {
 private:
-    using TimeoutLimiterBuilder = std::function<std::shared_ptr<BaseTimeoutLimiter>(tcp::socket &)>;
+    using TimeoutLimiterBuilder = std::function<std::shared_ptr<BaseTimeoutLimiter>(boost::asio::ip::tcp::socket &)>;
 
 public:
     ServerConfig(const TimeoutLimiterBuilder &timeout_limiter_builder)

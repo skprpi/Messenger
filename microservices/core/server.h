@@ -25,7 +25,7 @@ using tcp = boost::asio::ip::tcp;
 
 class Server final : public std::enable_shared_from_this<Server> {
 public:
-    Server(tcp::socket socket, const Router &router, std::shared_ptr<ServerConfig> server_config)
+    Server(tcp::socket &&socket, const Router &router, std::shared_ptr<ServerConfig> server_config)
         : socket(std::move(socket)), router(router), server_config(server_config) {}
 
     // Initiate the asynchronous operations associated with the connection.
@@ -41,38 +41,28 @@ public:
 
 private:
     void readRequestAsync() {
-        auto self = this->shared_from_this();
-
         auto request = std::make_shared<Request>();
-        auto read_handler = [self, request](beast::error_code ec, std::size_t bytes_transferred) {
+        auto read_handler = [this, request](beast::error_code ec, std::size_t bytes_transferred) {
             boost::ignore_unused(bytes_transferred);
-            if (!ec) self->processRequest(request);
+            if (!ec) processRequest(request);
         };
         http::async_read(socket, buffer, *request, read_handler);
     }
 
-    // Determine what needs to be done with the request message.
     void processRequest(std::shared_ptr<Request> request) {
-        if (!request) {
-            // TODO http error
-        }
+        assert(request);
         std::shared_ptr<BaseHandler> handler = router.getHandler(*request);
-        if (!handler) {
-            // TODO
-        }
+        assert(handler);
         std::shared_ptr<Response> response = handler->getResponce(*request);
-        if (!response) {
-            // TODO http error
-        }
+        assert(response);
         writeResponceAsync(*response);
     }
 
     void writeResponceAsync(const Response &response) {
-        auto self = this->shared_from_this();
-        http::async_write(socket, response, [self](beast::error_code ec, std::size_t) {
-            assert(self->timeout_limiter);
-            self->socket.shutdown(tcp::socket::shutdown_send, ec);
-            self->timeout_limiter->cancel();
+        http::async_write(socket, response, [this](beast::error_code ec, std::size_t) {
+            assert(timeout_limiter);
+            socket.shutdown(tcp::socket::shutdown_send, ec);
+            timeout_limiter->cancel();
         });
     }
 

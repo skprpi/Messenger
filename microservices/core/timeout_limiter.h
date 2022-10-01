@@ -32,12 +32,11 @@ public:
         : socket(socket), timer(socket.get_executor(), expiry_time) {}
 
     void start() final {
-        auto self = this->shared_from_this();
-        timer.async_wait([self](boost::beast::error_code ec) {
+        timer.async_wait([this](boost::beast::error_code ec) {
             if (ec) {
                 return;
             }
-            self->socket.close(ec);
+            socket.close(ec);
         });
     }
 
