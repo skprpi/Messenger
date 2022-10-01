@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -16,10 +16,10 @@ jobs:
       - name: Build docker compose
         run: docker-compose -f docker-compose.yml build
       - name: Install depts
-        run: sudo apt-get install -y cppcheck
-      - name: Cppcheck (m2m_chat_service)
-        run: chmod +x ./microservices/m2m_chat_service/run_cppcheck.sh && ./microservices/m2m_chat_service/run_cppcheck.sh
+        run: sudo apt-get install -y tox python3
+      - name: Python tests
+        run: chmod +x ./messenger_qa/create_venv.sh ./messenger_qa/run_tests.sh && ./messenger_qa/create_venv.sh && ./messenger_qa/run_tests.sh
       - name: Build (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/build.sh && ./microservices/m2m_chat_service/build.sh
-      - name: Tests (m2m_chat_service)
+      - name: Unit tests (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test && ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test

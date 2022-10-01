@@ -1,8 +1,10 @@
 #!/bin/bash
 
-SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+script_path="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+cd ${script_path}
 
-cd ${SCRIPTPATH}
+rm -rf ./_build
 mkdir _build
+
 cd ./_build
 cmake .. && make

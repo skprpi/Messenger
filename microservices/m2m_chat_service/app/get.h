@@ -23,4 +23,4 @@ class GetHandler : BaseHandler {
 }
 */
 
-#endif // MICROSERVICES_M2M_CHAT_SERVICE_APP_GET
+#endif  // MICROSERVICES_M2M_CHAT_SERVICE_APP_GET

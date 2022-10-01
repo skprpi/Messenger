@@ -1,12 +1,11 @@
 #ifndef MICROSERVICES_CORE_ROUTER
 #define MICROSERVICES_CORE_ROUTER
 
-#include "base_handler.h"
-#include <type_traits>
-#include <unordered_map>
 #include <string>
 #include <type_traits>
+#include <unordered_map>
 
+#include "base_handler.h"
 
 class Router final {
 private:
@@ -23,8 +22,9 @@ public:
         processHandler(handler);
     }*/
 
-    template <typename ...Args>
-    Router(std::shared_ptr<BaseHandler> handler, Args&&... other) : Router(std::forward<Args>(other)...) {
+    template <typename... Args>
+    Router(std::shared_ptr<BaseHandler> handler, Args &&...other)
+        : Router(std::forward<Args>(other)...) {
         processHandler(handler);
     }
 
@@ -34,7 +34,7 @@ public:
     }
 
     // TODO: Ket type std::invoke_result of getName
-    std::unordered_map<uint32_t , std::shared_ptr<BaseHandler>> handlers;
+    std::unordered_map<uint32_t, std::shared_ptr<BaseHandler>> handlers;
 };
 
-#endif // MICROSERVICES_CORE_ROUTER
+#endif  // MICROSERVICES_CORE_ROUTER

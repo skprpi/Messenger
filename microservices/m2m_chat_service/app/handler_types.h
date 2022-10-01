@@ -14,4 +14,4 @@ enum class HandlerTypes : uint32_t {
 } // namespace m2m_chat_service
 */
 
-#endif // MICROSERVICES_M2M_CHAT_SERVICE_APP_HANDLER_TYPES
+#endif  // MICROSERVICES_M2M_CHAT_SERVICE_APP_HANDLER_TYPES
