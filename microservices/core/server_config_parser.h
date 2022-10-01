@@ -3,9 +3,7 @@
 
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
-#include <rapidjson/reader.h>
 #include <rapidjson/stringbuffer.h>
-#include <rapidjson/writer.h>
 
 #include <boost/asio.hpp>
 #include <filesystem>
@@ -59,11 +57,6 @@ public:
 
         rapidjson::Document document;
         document.ParseStream(stream_wrapper);
-
-        // TODO change to rapidjson::Reader
-        // rapidjson::StringBuffer buffer {};
-        // rapidjson::Writer<rapidjson::StringBuffer> json_reader(buffer);
-        // document.Accept(json_reader);
         assert(!document.HasParseError());
 
         return std::make_shared<ServerConfig>(TimeoutLimiterParser::parse(document));
