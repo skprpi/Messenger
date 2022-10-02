@@ -1,6 +1,0 @@
-{
-    "timeout-limiter": {
-        "expiration-units": "second",
-        "expiration": 10
-    }
-}

@@ -18,7 +18,7 @@ jobs:
       - name: Install Python depts
         run: sudo apt-get install -y --no-install-recommends tox python3
       - name: Install C++ depts
-        run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgtest-dev rapidjson-dev
+        run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgtest-dev
       - name: Python tests
         run: chmod +x ./messenger_qa/create_venv.sh ./messenger_qa/run_tests.sh && ./messenger_qa/create_venv.sh && ./messenger_qa/run_tests.sh
       - name: Build (m2m_chat_service)
