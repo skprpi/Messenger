@@ -6,24 +6,23 @@
 #include <iostream>
 #include <sstream>
 
+#include "network_navigation.h"
 #include "server_config.h"
 #include "timeout_limiter.h"
-#include "network_navigation.h"
 
 namespace {
-
 
 class TimeoutLimiterFactory {
 private:
     using tcp = boost::asio::ip::tcp;
-    using TimeoutLimiterBuilder = std::function<std::shared_ptr<BaseTimeoutLimiter>(boost::asio::ip::tcp::socket&)>;
+    using TimeoutLimiterBuilder = std::function<std::shared_ptr<BaseTimeoutLimiter>(boost::asio::ip::tcp::socket &)>;
 
 public:
     static TimeoutLimiterBuilder create() {
         std::string expiration_raw = std::getenv("SERVER__TIMEOUT_LIMITER__EXPIRATION_MILLISECONDS");
 
         if (expiration_raw.empty()) {
-            return [](tcp::socket&) -> std::shared_ptr<BaseTimeoutLimiter> {
+            return [](tcp::socket &) -> std::shared_ptr<BaseTimeoutLimiter> {
                 return std::make_shared<EmptyTimeoutLimiter>();
             };
         }
@@ -55,10 +54,7 @@ public:
 class ServerConfigFactory {
 public:
     std::shared_ptr<ServerConfig> static create() {
-        return std::make_shared<ServerConfig>(
-            TimeoutLimiterFactory::create(),
-            IPPortFactory::create()
-        );
+        return std::make_shared<ServerConfig>(TimeoutLimiterFactory::create(), IPPortFactory::create());
     }
 };
 

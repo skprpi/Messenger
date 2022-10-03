@@ -5,6 +5,7 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <type_traits>
 
@@ -32,11 +33,12 @@ public:
         : socket(socket), timer(socket.get_executor(), expiry_time) {}
 
     void start() final {
-        timer.async_wait([this](boost::beast::error_code ec) {
+        timer.async_wait([self = shared_from_this()](boost::beast::error_code ec) {
             if (ec) {
                 return;
             }
-            socket.close(ec);
+            std::cout << "Connection closed by timeout!\n";
+            self->socket.close(ec);
         });
     }
 

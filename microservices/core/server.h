@@ -12,7 +12,6 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <iostream>
 
 #include "alias.h"
 #include "base_handler.h"
@@ -27,8 +26,9 @@ using tcp = boost::asio::ip::tcp;
 
 class HTTPConnection final : public std::enable_shared_from_this<HTTPConnection> {
 public:
-    HTTPConnection(tcp::socket &socket, const Router &router, std::shared_ptr<ServerConfig> server_config)
-        : socket(socket), router(router), server_config(server_config) {}
+    HTTPConnection(boost::asio::io_context &io_context, const Router &router,
+                   std::shared_ptr<ServerConfig> server_config)
+        : socket(io_context), router(router), server_config(server_config) {}
 
     // Initiate the asynchronous operations associated with the connection.
     void start() {
@@ -41,13 +41,19 @@ public:
         readRequestAsync();
     }
 
+    tcp::socket &getSocket() { return socket; }
+
 private:
     void readRequestAsync() {
         auto request = std::make_shared<Request>();
-        auto read_handler = [self=this, request](beast::error_code ec, std::size_t bytes_transferred) {
+        auto read_handler = [self = shared_from_this(), request](beast::error_code ec, std::size_t bytes_transferred) {
+            // capture request for async_read also
             boost::ignore_unused(bytes_transferred);
-            if (!ec) self->processRequest(request);
+            if (!ec) {
+                self->processRequest(request);
+            }
         };
+        assert(request);
         http::async_read(socket, buffer, *request, read_handler);
     }
 
@@ -56,19 +62,22 @@ private:
         std::shared_ptr<BaseHandler> handler = router.getHandler(*request);
         assert(handler);
         std::shared_ptr<Response> response = handler->getResponce(*request);
-        assert(response);
-        writeResponceAsync(*response);
+        writeResponceAsync(response);
     }
 
-    void writeResponceAsync(const Response &response) {
-        http::async_write(socket, response, [this](beast::error_code ec, std::size_t) {
-            assert(timeout_limiter);
-            socket.shutdown(tcp::socket::shutdown_send, ec);
-            timeout_limiter->cancel();
+    void writeResponceAsync(std::shared_ptr<Response> response) {
+        assert(response);
+        response->content_length(response->body().size());
+        http::async_write(socket, *response, [self = shared_from_this(), response](beast::error_code ec, std::size_t) {
+            // we have to capture response to use it via async_write, instead it will be segmentation fault
+            std::cout << "message has been written\n";
+            assert(self->timeout_limiter);
+            self->socket.shutdown(tcp::socket::shutdown_send, ec);
+            self->timeout_limiter->cancel();
         });
     }
 
-    tcp::socket &socket;
+    tcp::socket socket;
     beast::flat_buffer buffer{8192};
 
     const Router &router;
@@ -76,24 +85,21 @@ private:
     std::shared_ptr<BaseTimeoutLimiter> timeout_limiter;
 };
 
-
 // Forever async loop
-void startServerLoop(tcp::acceptor& acceptor, tcp::socket& socket,
-                     const Router &router, std::shared_ptr<ServerConfig> server_config) {
-    std::cout << "h1\n";
+void startServerLoop(tcp::acceptor &acceptor, boost::asio::io_context &io_context, const Router &router,
+                     std::shared_ptr<ServerConfig> server_config) {
     assert(server_config);
-    acceptor.async_accept(socket, [&acceptor, &router, &socket, server_config](beast::error_code ec) {
-        std::cout << "h2-0\n";
-        if(!ec) {
-            std::make_shared<HTTPConnection>(socket, router, server_config)->start();
-        }
-        std::cout << "h2-1\n";
-        startServerLoop(acceptor, socket, router, server_config);
-        std::cout << "h2-2\n";
-    });
-    std::cout << "h3\n";
-}
+    auto http_connection = std::make_shared<HTTPConnection>(io_context, router, server_config);
+    auto &socket = http_connection->getSocket();
 
+    acceptor.async_accept(socket,
+                          [&acceptor, &router, &io_context, server_config, http_connection](beast::error_code ec) {
+                              if (!ec) {
+                                  http_connection->start();
+                              }
+                              startServerLoop(acceptor, io_context, router, server_config);
+                          });
+}
 
 void startServer(const Router &router) {
     boost::asio::io_context io_context;
@@ -102,9 +108,8 @@ void startServer(const Router &router) {
     assert(config);
 
     boost::asio::ip::tcp::acceptor acceptor(io_context, config->getEndpoint());
-    boost::asio::ip::tcp::socket socket(io_context);
 
-    startServerLoop(acceptor, socket, router, config);
+    startServerLoop(acceptor, io_context, router, config);
     std::cout << "service started!\n";
 
     io_context.run();
