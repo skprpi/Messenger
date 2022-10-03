@@ -26,8 +26,8 @@ using tcp = boost::asio::ip::tcp;
 
 class HTTPConnection final : public std::enable_shared_from_this<HTTPConnection> {
 public:
-    HTTPConnection(boost::asio::io_context &io_context, const Router &router,
-                   std::shared_ptr<ServerConfig> server_config)
+    HTTPConnection(
+            boost::asio::io_context &io_context, const Router &router, std::shared_ptr<ServerConfig> server_config)
         : socket(io_context), router(router), server_config(server_config) {}
 
     // Initiate the asynchronous operations associated with the connection.
@@ -87,18 +87,18 @@ private:
 
 // Forever async loop
 void startServerLoop(tcp::acceptor &acceptor, boost::asio::io_context &io_context, const Router &router,
-                     std::shared_ptr<ServerConfig> server_config) {
+        std::shared_ptr<ServerConfig> server_config) {
     assert(server_config);
     auto http_connection = std::make_shared<HTTPConnection>(io_context, router, server_config);
     auto &socket = http_connection->getSocket();
 
-    acceptor.async_accept(socket,
-                          [&acceptor, &router, &io_context, server_config, http_connection](beast::error_code ec) {
-                              if (!ec) {
-                                  http_connection->start();
-                              }
-                              startServerLoop(acceptor, io_context, router, server_config);
-                          });
+    acceptor.async_accept(
+            socket, [&acceptor, &router, &io_context, server_config, http_connection](beast::error_code ec) {
+                if (!ec) {
+                    http_connection->start();
+                }
+                startServerLoop(acceptor, io_context, router, server_config);
+            });
 }
 
 void startServer(const Router &router) {
