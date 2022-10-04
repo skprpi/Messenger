@@ -1,15 +1,6 @@
 version: "3"
 
 services:
-
-  m2m_chat_service:
-    container_name: "m2m_chat_service"
-    image: mfatin/messenger:latest
-    volumes:
-      - ./microservices/m2m_chat_service:/usr/src/messenger/microservices/m2m_chat_service
-      - ./microservices/core:/usr/src/messenger/microservices/core
-    command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service && chmod +x ./build.sh && ./build.sh"
-
   mongodb:
     container_name: "mongodb"
     image: mongo

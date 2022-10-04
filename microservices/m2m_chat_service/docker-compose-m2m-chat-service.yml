@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  m2m_chat_service:
+    container_name: "m2m_chat_service"
+    image: mfatin/messenger:latest
+    volumes:
+      - .:/usr/src/messenger/microservices/m2m_chat_service
+      - ./../core:/usr/src/messenger/microservices/core
+    command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service && chmod +x ./build.sh ./run.sh && ./build.sh && ./run.sh"
+    ports:
+      - 9000:${SERVER__PORT} # localhost:9000
