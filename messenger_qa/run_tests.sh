@@ -12,12 +12,10 @@ if [ -z "$out" ]; then
 fi
 
 microservices_directory="${script_path}/../microservices"
-export m2m_chat_service_directory="${microservices_directory}/m2m_chat_service"
-export docker_compose_m2m_chat_service="${microservices_directory}/m2m_chat_service/docker-compose-m2m-chat-service.yml"
-export m2m_chat_service_docker_compose_env="${microservices_directory}/m2m_chat_service/server.env"
+export docker_compose_setup_script="${microservices_directory}/m2m_chat_service/run_docker.sh"
 
-if [ ! -f ${docker_compose_m2m_chat_service} ]; then
-    echo "Can't find docker_compose_m2m_chat_service" 
+if [ ! -f ${docker_compose_setup_script} ]; then
+    echo "Can't find docker_compose_setup_script" 
     exit 77
 fi
 

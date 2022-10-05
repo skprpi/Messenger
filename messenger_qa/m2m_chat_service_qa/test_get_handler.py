@@ -18,18 +18,14 @@ def get_ustyle_file_paths(files_paths, style_file_path):
 
 # TODO: add flake8
 def test_get_handler():
-    docker_compose_path = os.getenv("docker_compose_m2m_chat_service")
-    assert(docker_compose_path)
+    docker_compose_setup_script_path = os.getenv("docker_compose_setup_script")
+    assert(docker_compose_setup_script_path)
 
-    docker_env_file_path = os.getenv("m2m_chat_service_docker_compose_env")
-    assert(docker_env_file_path)
-
-    docker_compose = DockerCompose(docker_compose_path, docker_env_file_path)
+    docker_compose = DockerCompose(docker_compose_setup_script_path)
     docker_compose.run()
 
-    time.sleep(30)
+    result = requests.get('http://0.0.0.0:9000', timeout=1) # TODO: use config value
 
-    result = requests.get('http://0.0.0.0:9000', timeout=10) # TODO: use config value
     print(result)
     assert(result.content.decode("utf-8") == "name=foo")
     docker_compose.stop()

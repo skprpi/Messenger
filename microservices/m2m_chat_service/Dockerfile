@@ -17,3 +17,5 @@ RUN apt-get install -y --no-install-recommends \
         ca-certificates \
         libboost-all-dev \
         libgtest-dev
+
+COPY ./_build /usr/src/messenger/microservices/m2m_chat_service/_build

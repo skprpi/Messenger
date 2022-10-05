@@ -1,16 +1,16 @@
 import os
 import subprocess
+import time
 
 class DockerCompose:
 
-    def __init__(self, docker_compose_file_path: str, docker_compose_env_file_path: str):
-        assert(os.path.isfile(docker_compose_file_path))
-        assert(os.path.isfile(docker_compose_env_file_path))
-        self.docker_compose_file_path = docker_compose_file_path
-        self.docker_compose_env_file_path = docker_compose_env_file_path
+    def __init__(self, docker_compose_setup_script_path: str):
+        assert(os.path.isfile(docker_compose_setup_script_path))
+        self.docker_compose_setup_script_path = docker_compose_setup_script_path
 
     def run(self):
-        self.process = subprocess.Popen(f"docker-compose --env-file {self.docker_compose_env_file_path} -f {self.docker_compose_file_path} up", shell=True)
+        self.process = subprocess.Popen(self.docker_compose_setup_script_path, shell=True)
+        time.sleep(1) # waiting for setup TODO waiting for output message
 
     def stop(self):
         self.process.kill()

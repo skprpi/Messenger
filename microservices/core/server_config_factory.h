@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "env.h"
 #include "network_navigation.h"
 #include "server_config.h"
 #include "timeout_limiter.h"
@@ -19,7 +20,7 @@ private:
 
 public:
     static TimeoutLimiterBuilder create() {
-        std::string expiration_raw = std::getenv("SERVER__TIMEOUT_LIMITER__EXPIRATION_MILLISECONDS");
+        std::string expiration_raw = Environment::getEnv("SERVER__TIMEOUT_LIMITER__EXPIRATION_MILLISECONDS");
 
         if (expiration_raw.empty()) {
             return [](tcp::socket &) -> std::shared_ptr<BaseTimeoutLimiter> {
@@ -38,8 +39,8 @@ public:
 class IPPortFactory {
 public:
     static IP_Port create() {
-        std::string port_raw = std::getenv("SERVER__PORT");
-        std::string ipv4 = std::getenv("SERVER__IPv4");
+        std::string port_raw = Environment::getEnv("SERVER__PORT");
+        std::string ipv4 = Environment::getEnv("SERVER__IPv4");
 
         assert(!port_raw.empty());
         assert(!ipv4.empty());
