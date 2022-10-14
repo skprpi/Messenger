@@ -17,7 +17,7 @@ target_include_directories(m2m_chat_service PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.74.0 REQUIRED COMPONENTS system)
+find_package(Boost 1.74.0 REQUIRED COMPONENTS system regex)
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(m2m_chat_service ${Boost_LIBRARIES})
 

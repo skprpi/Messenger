@@ -3,15 +3,16 @@
 
 #include "core/router.h"
 #include "core/server.h"
-#include "get.h"
 
-enum class HandlerType : uint32_t {
-    GET = 0,
-};
+std::shared_ptr<Response> fake_func(CallbackInfo&&) {
+    std::cout << "Fake func!" << std::endl;
+    return std::make_shared<Response>();
+}
 
 int main() {
-    auto get_handler = std::make_shared<m2m_chat_service::GetHandler>(HandlerType::GET);
-    Router router(get_handler);
+    Router router;
+    router.handleFunc("/{123}/path", "GET", &fake_func);
+    // router.handleFunc("/{id}/path", "GET", &fake_func);
 
     startServer(router);
     return 0;

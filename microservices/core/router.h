@@ -1,37 +1,51 @@
 #ifndef MICROSERVICES_CORE_ROUTER
 #define MICROSERVICES_CORE_ROUTER
 
+#include <deque>
 #include <string>
+#include <string_view>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 
-#include "base_handler.h"
+#include "alias.h"
+#include "target_resolver.h"
+
+struct CallbackInfo;
 
 class Router final {
-private:
-    void processHandler(std::shared_ptr<BaseHandler> handler) {
-        auto inserion_result = handlers.emplace(handler->getName(), handler);
-        bool inserted = inserion_result.second;
-        if (!inserted) {
-            throw "TODO: handler name have to be unique";
+public:
+    Router() = default;
+
+    void handleFunc(std::string &&url, std::string &&http_method, EndpointFunction callback) {
+        resolver.addEndpoint(std::move(url), std::move(http_method), callback);
+    }
+
+    std::shared_ptr<Response> getResponse(std::shared_ptr<Request> request) const {
+        // TODO: implement
+        // request.
+
+        std::string http_method = request->method_string().to_string();
+        std::string url = request->base().target().to_string();
+
+        // headers: request->base()
+        // boost::beast::buffers_to_string(request->body().data())
+
+        try {
+            // get
+            auto function = resolver.getCallback(url, http_method);
+            return function();
+        } catch (...) {
+            std::cout << "bad function\n";
+            auto response = std::make_shared<Response>();
+            response->body() = "bad response";
+            return response;
         }
     }
 
-public:
-    Router(std::shared_ptr<BaseHandler> handler) { processHandler(handler); }
-
-    template <typename... Args>
-    Router(std::shared_ptr<BaseHandler> handler, Args &&...other) : Router(std::forward<Args>(other)...) {
-        processHandler(handler);
-    }
-
-    std::shared_ptr<BaseHandler> getHandler(const Request &request) const {
-        // TODO: implement
-        return handlers.begin()->second;
-    }
-
+private:
     // TODO: Ket type std::invoke_result of getName
-    std::unordered_map<uint32_t, std::shared_ptr<BaseHandler>> handlers;
+    TargetResolver resolver;
 };
 
 #endif  // MICROSERVICES_CORE_ROUTER

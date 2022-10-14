@@ -14,7 +14,7 @@
 #include <string>
 
 #include "alias.h"
-#include "base_handler.h"
+#include "http_assert.h"
 #include "router.h"
 #include "server_config.h"
 #include "server_config_factory.h"
@@ -34,10 +34,9 @@ public:
     void start() {
         auto builder = server_config->getTimeoutLimiterBuilder();
         timeout_limiter = builder(socket);
-        assert(timeout_limiter);
+        LOGIC_ASSERT(timeout_limiter, "Got nullptr timeout_limiter");
         timeout_limiter->start();
-
-        assert(server_config);
+        LOGIC_ASSERT(server_config, "Got nullptr server_config");
         readRequestAsync();
     }
 
@@ -53,25 +52,24 @@ private:
                 self->processRequest(request);
             }
         };
-        assert(request);
+        LOGIC_ASSERT(request, "Got nullptr request");
         http::async_read(socket, buffer, *request, read_handler);
     }
 
     void processRequest(std::shared_ptr<Request> request) {
-        assert(request);
-        std::shared_ptr<BaseHandler> handler = router.getHandler(*request);
-        assert(handler);
-        std::shared_ptr<Response> response = handler->getResponce(*request);
+        LOGIC_ASSERT(request, "Got nullptr request");
+        std::shared_ptr<Response> response = router.getResponse(request);
+        LOGIC_ASSERT(response, "Got nullptr response");
         writeResponceAsync(response);
     }
 
     void writeResponceAsync(std::shared_ptr<Response> response) {
-        assert(response);
+        LOGIC_ASSERT(response, "Got nullptr response");
         response->content_length(response->body().size());
         http::async_write(socket, *response, [self = shared_from_this(), response](beast::error_code ec, std::size_t) {
             // we have to capture response to use it via async_write, instead it will be segmentation fault
             std::cout << "message has been written\n";
-            assert(self->timeout_limiter);
+            LOGIC_ASSERT(self->timeout_limiter, "Got nullptr timeout_limiter");
             self->socket.shutdown(tcp::socket::shutdown_send, ec);
             self->timeout_limiter->cancel();
         });
@@ -88,7 +86,7 @@ private:
 // Forever async loop
 void startServerLoop(tcp::acceptor &acceptor, boost::asio::io_context &io_context, const Router &router,
         std::shared_ptr<ServerConfig> server_config) {
-    assert(server_config);
+    LOGIC_ASSERT(server_config, "Got nullptr server_config");
     auto http_connection = std::make_shared<HTTPConnection>(io_context, router, server_config);
     auto &socket = http_connection->getSocket();
 
@@ -105,7 +103,7 @@ void startServer(const Router &router) {
     boost::asio::io_context io_context;
 
     std::shared_ptr<ServerConfig> config = ServerConfigFactory::create();
-    assert(config);
+    LOGIC_ASSERT(config, "Got nullptr config");
 
     boost::asio::ip::tcp::acceptor acceptor(io_context, config->getEndpoint());
 

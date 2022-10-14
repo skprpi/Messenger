@@ -18,10 +18,15 @@ jobs:
       - name: Install Python depts
         run: sudo apt-get install -y --no-install-recommends tox python3
       - name: Install C++ depts
-        run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgtest-dev
+        run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgtest-dev clang-14
       - name: Python tests
         run: chmod +x ./messenger_qa/create_venv.sh ./messenger_qa/run_tests.sh && ./messenger_qa/create_venv.sh && ./messenger_qa/run_tests.sh
       - name: Build (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/build.sh && ./microservices/m2m_chat_service/build.sh
       - name: Unit tests (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test && ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test
+      - name: Unit tests (core library)
+        run: chmod +x ./microservices/core_tests/gtest/build.sh ./microservices/core_tests/gtest/run_tests.sh && ./microservices/core_tests/gtest/build.sh && ./microservices/core_tests/gtest/run_tests.sh
+      - name: Fuzz tests (core library)
+        run: chmod +x ./microservices/core_tests/fuzz/build.sh ./microservices/core_tests/fuzz/run_tests.sh && ./microservices/core_tests/fuzz/build.sh && ./microservices/core_tests/fuzz/run_tests.sh
+  

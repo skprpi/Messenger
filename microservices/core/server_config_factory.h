@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "env.h"
+#include "http_assert.h"
 #include "network_navigation.h"
 #include "server_config.h"
 #include "timeout_limiter.h"
@@ -36,17 +37,20 @@ public:
     }
 };
 
-class IPPortFactory {
+class NetworkAddressFactory {
 public:
-    static IP_Port create() {
-        std::string port_raw = Environment::getEnv("SERVER__PORT");
-        std::string ipv4 = Environment::getEnv("SERVER__IPv4");
+    static std::shared_ptr<NetworkAddress> create() {
+        std::string port = Environment::getEnv("SERVER__PORT");
+        std::string address = Environment::getEnv("SERVER__ADDRESS");
 
-        assert(!port_raw.empty());
-        assert(!ipv4.empty());
+        ENV_VARIABLE_ASSERT(!port.empty(), "SERVER__PORT is empty");
+        ENV_VARIABLE_ASSERT(!address.empty(), "SERVER__ADDRESS is empty");
 
-        uint16_t port = std::atoi(port_raw.c_str());
-        return IP_Port(ipv4, port);
+        if (true/* TODO: add checks that address is ipv4 */) {
+            const uint16_t port_ = std::stoi(port);
+            return std::make_shared<IP_Port>(address, port_);
+        }
+        throw EnvironmentVariableException("Type of address undentified");
     }
 };
 
@@ -55,7 +59,7 @@ public:
 class ServerConfigFactory {
 public:
     std::shared_ptr<ServerConfig> static create() {
-        return std::make_shared<ServerConfig>(TimeoutLimiterFactory::create(), IPPortFactory::create());
+        return std::make_shared<ServerConfig>(TimeoutLimiterFactory::create(), NetworkAddressFactory::create());
     }
 };
 

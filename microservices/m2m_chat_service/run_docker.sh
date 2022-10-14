@@ -20,4 +20,4 @@ check_file_exist "$docker_compose_m2m_chat_service"
 check_file_exist "$docker_compose_m2m_chat_service_env"
 
 # env-file to use it in docker-compose file 
-docker-compose --env-file ${docker_compose_m2m_chat_service_env} -f ${docker_compose_m2m_chat_service} up # --force-recreate
+docker-compose --env-file ${docker_compose_m2m_chat_service_env} -f ${docker_compose_m2m_chat_service} up --force-recreate
