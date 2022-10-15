@@ -13,8 +13,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Build docker compose
-        run: docker-compose -f docker-compose.yml build
       - name: Install Python depts
         run: sudo apt-get install -y --no-install-recommends tox python3
       - name: Install C++ depts
