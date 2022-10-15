@@ -1,5 +1,5 @@
-#ifndef MICROSERVICES_CORE_TARGET_RESOLVER
-#define MICROSERVICES_CORE_TARGET_RESOLVER
+#ifndef MICROSERVICES__CORE__SRC__PRIVATE__TARGET_RESOLVER_H
+#define MICROSERVICES__CORE__SRC__PRIVATE__TARGET_RESOLVER_H
 
 // find function by url
 
@@ -11,8 +11,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include "alias.h"
-#include "http_assert.h"
+#include "../include/corelib/alias.h"
+#include "../include/corelib/http_assert.h"
 
 struct CallbackInfo {
     std::unordered_map<std::string, std::string> url_params;
@@ -241,4 +241,4 @@ private:
     std::shared_ptr<Node> root = std::make_shared<Node>("root");
 };
 
-#endif  // MICROSERVICES_CORE_TARGET_RESOLVER
+#endif  // MICROSERVICES__CORE__SRC__PRIVATE__TARGET_RESOLVER_H

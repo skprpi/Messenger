@@ -5,8 +5,8 @@
 #include <unordered_set>
 #include <random>
 
-#include "core/http_assert.h"
-#include "core/router.h"
+#include "corelib/http_assert.h"
+#include "corelib/router.h"
 
 EndpointFunction fake_endpoint_func = [] (CallbackInfo&&) {
     return std::shared_ptr<Response>();

@@ -1,5 +1,5 @@
-#ifndef MICROSERVICES_CORE_SERVER
-#define MICROSERVICES_CORE_SERVER
+#ifndef MICROSERVICES__CORE__SRC__PRIVATE__HTTP_CONNECTION_H
+#define MICROSERVICES__CORE__SRC__PRIVATE__HTTP_CONNECTION_H
 
 #include <boost/asio.hpp>
 #include <boost/beast/core.hpp>
@@ -13,9 +13,9 @@
 #include <memory>
 #include <string>
 
-#include "alias.h"
-#include "http_assert.h"
-#include "router.h"
+#include "../include/corelib/alias.h"
+#include "../include/corelib/http_assert.h"
+#include "../include/corelib/router.h"
 #include "server_config.h"
 #include "server_config_factory.h"
 #include "timeout_limiter.h"
@@ -99,18 +99,4 @@ void startServerLoop(tcp::acceptor &acceptor, boost::asio::io_context &io_contex
             });
 }
 
-void startServer(const Router &router) {
-    boost::asio::io_context io_context;
-
-    std::shared_ptr<ServerConfig> config = ServerConfigFactory::create();
-    LOGIC_ASSERT(config, "Got nullptr config");
-
-    boost::asio::ip::tcp::acceptor acceptor(io_context, config->getEndpoint());
-
-    startServerLoop(acceptor, io_context, router, config);
-    std::cout << "service started!\n";
-
-    io_context.run();
-}
-
-#endif  // MICROSERVICES_CORE_SERVER
+#endif  // MICROSERVICES__CORE__SRC__PRIVATE__HTTP_CONNECTION_H

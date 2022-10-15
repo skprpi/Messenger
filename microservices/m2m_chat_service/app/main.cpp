@@ -1,8 +1,8 @@
 #include <boost/asio.hpp>
 #include <iostream>
 
-#include "core/router.h"
-#include "core/server.h"
+#include "corelib/router.h"
+#include "corelib/server.h"
 
 std::shared_ptr<Response> fake_func(CallbackInfo&&) {
     std::cout << "Fake func!" << std::endl;

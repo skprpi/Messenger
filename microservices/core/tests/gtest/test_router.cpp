@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "core/http_assert.h"
-#include "core/router.h"
+#include "corelib/http_assert.h"
+#include "corelib/router.h"
 
 TEST(test_router, named_node_dublication) {
     Router router;

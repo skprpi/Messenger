@@ -1,5 +1,5 @@
-#ifndef MICROSERVICES_CORE_SERVER_CONFIG_VALIDATOR
-#define MICROSERVICES_CORE_SERVER_CONFIG_VALIDATOR
+#ifndef MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_FACTORY_H
+#define MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_FACTORY_H
 
 #include <boost/asio.hpp>
 #include <fstream>
@@ -7,10 +7,11 @@
 #include <sstream>
 
 #include "env.h"
-#include "http_assert.h"
 #include "network_navigation.h"
 #include "server_config.h"
 #include "timeout_limiter.h"
+
+#include "../include/corelib/http_assert.h"
 
 namespace {
 
@@ -63,4 +64,4 @@ public:
     }
 };
 
-#endif  // MICROSERVICES_CORE_SERVER_CONFIG_VALIDATOR
+#endif  // MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_FACTORY_H

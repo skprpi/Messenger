@@ -1,5 +1,5 @@
-#ifndef MICROSERVICES_CORE_ENV
-#define MICROSERVICES_CORE_ENV
+#ifndef MICROSERVICES__CORE__SRC__PRIVATE__ENV_H
+#define MICROSERVICES__CORE__SRC__PRIVATE__ENV_H
 
 #include <iostream>
 #include <string>
@@ -16,4 +16,4 @@ public:
     }
 };
 
-#endif  // MICROSERVICES_CORE_ENV
+#endif  // MICROSERVICES__CORE__SRC__PRIVATE__ENV_H

@@ -1,11 +1,11 @@
-#ifndef MICROSERVICES_CORE_SERVER_CONFIG
-#define MICROSERVICES_CORE_SERVER_CONFIG
+#ifndef MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_H
+#define MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_H
 
 #include <boost/asio.hpp>
 
 #include "network_navigation.h"
 #include "timeout_limiter.h"
-#include "http_assert.h"
+#include "../include/corelib/http_assert.h"
 
 class ServerConfig {
 private:
@@ -27,4 +27,4 @@ private:
     std::shared_ptr<NetworkAddress> address;  // provide endpoint
 };
 
-#endif  // MICROSERVICES_CORE_SERVER_CONFIG
+#endif  // MICROSERVICES__CORE__SRC__PRIVATE__SERVER_CONFIG_H

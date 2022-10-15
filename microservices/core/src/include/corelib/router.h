@@ -1,5 +1,5 @@
-#ifndef MICROSERVICES_CORE_ROUTER
-#define MICROSERVICES_CORE_ROUTER
+#ifndef MICROSERVICES__CORE__SRC__INCLUDE__CORELIB__ROUTER_H
+#define MICROSERVICES__CORE__SRC__INCLUDE__CORELIB__ROUTER_H
 
 #include <deque>
 #include <string>
@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "alias.h"
-#include "target_resolver.h"
+#include "../../private/target_resolver.h"
 
 struct CallbackInfo;
 
@@ -48,4 +48,4 @@ private:
     TargetResolver resolver;
 };
 
-#endif  // MICROSERVICES_CORE_ROUTER
+#endif  // MICROSERVICES__CORE__SRC__INCLUDE__CORELIB__ROUTER_H

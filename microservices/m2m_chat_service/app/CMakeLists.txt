@@ -7,10 +7,8 @@ file(GLOB M2M_CHAT_SOURCES "*.h" "*.cpp")
 target_sources(m2m_chat_service PRIVATE ${M2M_CHAT_SOURCES})
 
 
-# core
-# include("${CMAKE_CURRENT_SOURCE_DIR}/../../core/CMakeLists.txt")
-# target_sources(m2m_chat_service PRIVATE ${CORE_SOURCES})
-target_include_directories(m2m_chat_service PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+# corelib
+target_include_directories(m2m_chat_service PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../core/src/include)
 
 
 # boost
