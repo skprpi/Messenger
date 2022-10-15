@@ -3,21 +3,23 @@
 script_path="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd ${script_path}
 
-m2m_chat_service_docker_compose="${script_path}/microservices/m2m_chat_service/docker-compose-m2m-chat-service.yml"
-docker_compose_m2m_chat_service_env="${script_path}/microservices/m2m_chat_service/server.env"
-base_docker_compose="${script_path}/docker-compose.yml"
+# $1 - file path
+check_file_exist () {
+    if [ ! -f ${1} ]; then
+        echo "Can't find $1" 
+        exit 77
+    fi
+}
 
-if [ ! -f ${docker_compose_m2m_chat_service_env} ]; then
-    echo "Can't find docker_compose_m2m_chat_service_env" 
-    exit 77
-fi
-if [ ! -f ${m2m_chat_service_docker_compose} ]; then
-    echo "Can't find m2m_chat_service_docker_compose" 
-    exit 77
-fi
-if [ ! -f ${base_docker_compose} ]; then
-    echo "Can't find base_docker_compose" 
-    exit 77
-fi
+# docker compose file
+docker_compose="${script_path}/docker-compose.yml"
 
-docker-compose --env-file ${docker_compose_m2m_chat_service_env} -f ${m2m_chat_service_docker_compose} -f ${base_docker_compose} up --force-recreate
+# env files - used in docker compose file, not in container
+docker_compose_env="${script_path}/server.env"
+
+# check files exist
+check_file_exist "${docker_compose}"
+check_file_exist "${docker_compose_env}"
+
+# run docker compose
+docker-compose --env-file ${docker_compose_env} -f ${docker_compose} up --force-recreate 
