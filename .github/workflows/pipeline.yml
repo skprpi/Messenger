@@ -26,7 +26,6 @@ jobs:
       - name: Unit tests (m2m_chat_service)
         run: chmod +x ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test && ./microservices/m2m_chat_service/_build/m2m_chat_service_unit_test
       - name: Unit tests (core library)
-        run: chmod +x ./microservices/core_tests/gtest/build.sh ./microservices/core_tests/gtest/run_tests.sh && ./microservices/core_tests/gtest/build.sh && ./microservices/core_tests/gtest/run_tests.sh
+        run: chmod +x ./microservices/core/tests/gtest/build.sh ./microservices/core/tests/gtest/run_tests.sh && ./microservices/core/tests/gtest/build.sh && ./microservices/core/tests/gtest/run_tests.sh
       - name: Fuzz tests (core library)
-        run: chmod +x ./microservices/core_tests/fuzz/build.sh ./microservices/core_tests/fuzz/run_tests_pipeline.sh && ./microservices/core_tests/fuzz/build.sh && ./microservices/core_tests/fuzz/run_tests_pipeline.sh
-  
+        run: chmod +x ./microservices/core/tests/fuzz/build.sh ./microservices/core/tests/fuzz/run_tests_pipeline.sh && ./microservices/core/tests/fuzz/build.sh && ./microservices/core/tests/fuzz/run_tests_pipeline.sh
