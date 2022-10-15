@@ -22,8 +22,10 @@ using EndpointFunction = std::function<std::shared_ptr<Response>(CallbackInfo&&)
 
 class TerminalNode {
 public:
-    TerminalNode(const std::string& http_method, EndpointFunction function) : http_method(http_method), function(function) {}
-    TerminalNode(std::string&& http_method, EndpointFunction function) : http_method(std::move(http_method)), function(function) {}
+    TerminalNode(const std::string& http_method, EndpointFunction function)
+        : http_method(http_method), function(function) {}
+    TerminalNode(std::string&& http_method, EndpointFunction function)
+        : http_method(std::move(http_method)), function(function) {}
 
     const std::string http_method;
     const EndpointFunction function;
@@ -90,13 +92,13 @@ protected:
 // TODO: add mock target resolver
 class TargetResolver {
 public:
-    void checkUrlUnique(const size_t pos, const std::string& url, const std::string& http_method, std::shared_ptr<Node> node) {
+    void checkUrlUnique(
+            const size_t pos, const std::string& url, const std::string& http_method, std::shared_ptr<Node> node) {
         LOGIC_ASSERT(node, "Got nullptr node");
         size_t idx = url.find('/', pos);
         if (idx == std::string::npos) {
             idx = (pos >= url.size()) ? std::string::npos : url.size();
         }
-        
 
         if (idx == std::string::npos) {
             // terminal node
@@ -194,7 +196,8 @@ public:
         addUrlToTrie(std::move(url), std::move(http_method), callback);
     }
 
-    std::function<std::shared_ptr<Response>()> getCallback(const std::string& url, const std::string& http_method) const {
+    std::function<std::shared_ptr<Response>()> getCallback(
+            const std::string& url, const std::string& http_method) const {
         CallbackInfo info;
         std::shared_ptr<TerminalNode> terminal_node = getUrlParamsRecursive(1, url, http_method, root, info);
         BAD_REQUEST_ASSERT(terminal_node, "Expectod not nullptr terminal node");
@@ -205,8 +208,8 @@ public:
 
 private:
     // TODO: change Node* to iterator -> universal iterator?
-    std::shared_ptr<TerminalNode> getUrlParamsRecursive(
-            const size_t pos, const std::string& url, const std::string& http_method, std::shared_ptr<Node> node, CallbackInfo& info) const {
+    std::shared_ptr<TerminalNode> getUrlParamsRecursive(const size_t pos, const std::string& url,
+            const std::string& http_method, std::shared_ptr<Node> node, CallbackInfo& info) const {
         LOGIC_ASSERT(node, "Got nullptr node");
         size_t idx = url.find('/', pos);
         if (idx == std::string::npos) {
@@ -228,7 +231,8 @@ private:
 
         const std::vector<std::shared_ptr<Node>>& pattern_node_result = node->findPatternNodes();
         for (int j = 0; j < pattern_node_result.size(); ++j) {
-            std::shared_ptr<TerminalNode> result = getUrlParamsRecursive(idx + 1, url, http_method, pattern_node_result[j], info);
+            std::shared_ptr<TerminalNode> result =
+                    getUrlParamsRecursive(idx + 1, url, http_method, pattern_node_result[j], info);
             if (!result) {
                 continue;
             }

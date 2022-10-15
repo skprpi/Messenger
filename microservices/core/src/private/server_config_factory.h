@@ -6,12 +6,11 @@
 #include <iostream>
 #include <sstream>
 
+#include "../include/corelib/http_assert.h"
 #include "env.h"
 #include "network_navigation.h"
 #include "server_config.h"
 #include "timeout_limiter.h"
-
-#include "../include/corelib/http_assert.h"
 
 namespace {
 
@@ -47,7 +46,7 @@ public:
         ENV_VARIABLE_ASSERT(!port.empty(), "SERVER__PORT is empty");
         ENV_VARIABLE_ASSERT(!address.empty(), "SERVER__ADDRESS is empty");
 
-        if (true/* TODO: add checks that address is ipv4 */) {
+        if (true /* TODO: add checks that address is ipv4 */) {
             const uint16_t port_ = std::stoi(port);
             return std::make_shared<IP_Port>(address, port_);
         }

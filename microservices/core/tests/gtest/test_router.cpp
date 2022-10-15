@@ -10,7 +10,7 @@ TEST(test_router, named_node_dublication) {
     try {
         router.handleFunc("/123/path", "GET", fake_function);
         ASSERT_TRUE(false);
-    } catch (LogicException&) {
+    } catch (LogicException &) {
         ASSERT_TRUE(true);
     }
 }

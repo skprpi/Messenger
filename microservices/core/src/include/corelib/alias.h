@@ -8,4 +8,4 @@
 using Response = boost::beast::http::response<boost::beast::http::string_body>;  // dynamic_body?
 using Request = boost::beast::http::request<boost::beast::http::dynamic_body>;
 
-#endif // MICROSERVICES__CORE__SRC__INCLUDE__CORELIB__ALIAS_H
+#endif  // MICROSERVICES__CORE__SRC__INCLUDE__CORELIB__ALIAS_H

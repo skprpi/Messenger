@@ -4,7 +4,7 @@
 #include "corelib/router.h"
 #include "corelib/server.h"
 
-std::shared_ptr<Response> fake_func(CallbackInfo&&) {
+std::shared_ptr<Response> fake_func(CallbackInfo&& info) {
     std::cout << "Fake func!" << std::endl;
     return std::make_shared<Response>();
 }

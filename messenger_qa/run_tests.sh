@@ -11,12 +11,4 @@ if [ -z "$out" ]; then
     pip install tox
 fi
 
-microservices_directory="${script_path}/../microservices"
-export docker_compose_setup_script="${microservices_directory}/m2m_chat_service/run_docker.sh"
-
-if [ ! -f ${docker_compose_setup_script} ]; then
-    echo "Can't find docker_compose_setup_script" 
-    exit 77
-fi
-
 tox -r

@@ -8,8 +8,8 @@
 #include <type_traits>
 #include <unordered_map>
 
-#include "alias.h"
 #include "../../private/target_resolver.h"
+#include "alias.h"
 
 struct CallbackInfo;
 
