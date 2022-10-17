@@ -35,9 +35,7 @@ class Node {
 public:
     using NodeSharedPtr = std::shared_ptr<Node>;
 
-    Node(const std::string& name) : name(name) {}
-
-    Node(std::string&& name) : name(std::move(name)) {}
+    Node(std::string name) : name(std::move(name)) {}
 
     std::shared_ptr<Node> findNamedNode(const std::string& name) const {
         auto it = named_nodes.find(name);

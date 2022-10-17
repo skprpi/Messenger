@@ -11,9 +11,6 @@ services:
     command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service/_build && chmod +x ./m2m_chat_service && ./m2m_chat_service"
     ports:
       - "9000:${M2M_CHAT_SERVICE_PORT}" # localhost:9000
-    # networks:
-    #   net:
-    #     ipv4_address: ${SERVER__ADDRESS}
 
   mongodb:
     container_name: "mongodb"

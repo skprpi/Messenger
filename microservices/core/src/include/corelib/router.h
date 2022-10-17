@@ -22,21 +22,15 @@ public:
     }
 
     std::shared_ptr<Response> getResponse(std::shared_ptr<Request> request) const {
-        // TODO: implement
-        // request.
-
         std::string http_method = request->method_string().to_string();
         std::string url = request->base().target().to_string();
-
-        // headers: request->base()
-        // boost::beast::buffers_to_string(request->body().data())
 
         try {
             // get
             auto function = resolver.getCallback(url, http_method);
             return function();
-        } catch (...) {
-            std::cout << "bad function\n";
+        } catch (BadRequestException& ex) {
+            std::cout << "bad function: " << ex.what() << std::endl;
             auto response = std::make_shared<Response>();
             response->body() = "bad response";
             return response;
