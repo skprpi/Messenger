@@ -1,14 +1,16 @@
-version: "3"
+version: "3.7"
 
 services:
-
   m2m_chat_service:
-    container_name: "m2m_chat_service"
-    image: mfatin/messenger:1.0
-    volumes:
-      - ./microservices/m2m_chat_service:/usr/src/messenger/microservices/m2m_chat_service
-      - ./microservices/_third_party:/usr/src/messenger/microservices/_third_party
-    command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service && chmod +x ./build.sh && ./build.sh"
+    container_name: m2m_chat_service
+    hostname: m2m_chat_service
+    image: mfatin/messenger:latest
+    env_file:
+      - ./microservices/m2m_chat_service/server.env # use env variable in container
+    # image capture executable file
+    command: bash -c "cd /usr/src/messenger/microservices/m2m_chat_service/_build && chmod +x ./m2m_chat_service && ./m2m_chat_service"
+    ports:
+      - "9000:${M2M_CHAT_SERVICE_PORT}" # localhost:9000
 
   mongodb:
     container_name: "mongodb"
